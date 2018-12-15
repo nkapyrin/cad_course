@@ -3,8 +3,7 @@
 <xsl:output method="text"/>
 
 <xsl:param name="current_decimal"/>
-<xsl:param name="include_source_code" select="no"/>
-<xsl:variable name="title_parent_tree" select="//p[@decim=$current_decimal]/@title_parent_tree"/>
+<xsl:param name="include_source_code" select="yes"/>
 
 <!-- Основной шаблон, с которого начинается текст -->
 <xsl:template match="/">
