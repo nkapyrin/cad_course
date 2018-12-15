@@ -103,7 +103,7 @@
 
 <xsl:choose>
   <xsl:when test="count(//compounddef[@kind='file']) &gt; 0">
-    <xsl:for-each select="///compounddef[@kind='file']">
+    <xsl:for-each select="//compounddef[@kind='file']">
       <xsl:sort select="compoundname/text()"/> <!-- Включать имена файлов в алфавитном порядке -->
       <xsl:variable name="this_file_refid" select="@id"/>
 
