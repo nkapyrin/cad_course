@@ -1,0 +1,204 @@
+%%% Здесь выбираются необходимые графы
+%\documentclass[russian,utf8,pointsection,nocolumnsxix,nocolumnxxxi,nocolumnxxxii]{eskdtext}
+\documentclass[russian,pointsection,12pt]{eskdtext}
+\usepackage{fontspec}
+
+\usepackage{hyperref}
+%\usepackage[hyphens]{hyperref}
+
+\usepackage{listings}
+
+% Устранение расстояний между элементами списков
+\usepackage{enumitem}
+\setlist{nosep}
+\usepackage{setspace}
+
+\newcommand{\No}{\textnumero}
+\newcommand{\DecimalNumber}{}
+%\usepackage{showframe}
+
+%%% Чтобы работал eskdx и некоторые другие пакеты LaTeX
+\usepackage{xecyr}
+
+\usepackage{eskdchngsheet}
+\usepackage{eskdtotal}
+
+%%% Для работы шрифтов
+\usepackage{xunicode,xltxtra}
+
+%%% Для работы с русскими текстами (расстановки переносов, последовательность комманд строго обязательна)
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+
+% Ставим ГОСТ как основной шрифт
+\usepackage{xcolor}
+\usepackage{fontspec}
+% [Path={fonts/}, BoldFont={GOST_type_A-Bold}, ItalicFont={GOST_type_A-Italic}]
+
+\setmainfont{GOST_type_A}
+\setsansfont{GOST_type_A}
+\setmonofont{GOST_type_A}
+\newfontfamily{\cyrillicfont}{GOST_type_A}[Path={fonts/}, UprightFont={GOST_type_A}, BoldFont={GOST_type_A_Bold}, ItalicFont={GOST_type_A_Italic}]
+\newfontfamily{\cyrillicfontt}{GOST_type_A}[Path={fonts/}, UprightFont={GOST_type_A}, BoldFont={GOST_type_A_Bold}, ItalicFont={GOST_type_A_Italic}]
+\newfontfamily{\cyrillicfonttt}{GOST_type_A}[Path={fonts/}, UprightFont={GOST_type_A}, BoldFont={GOST_type_A_Bold}, ItalicFont={GOST_type_A_Italic}]
+
+% Ставим LiberationSerif как основной шрифт
+%\newfontfamily{\cyrillicfont}{LiberationSerif}
+%\newfontfamily{\cyrillicfontt}{LiberationSans}
+%\newfontfamily{\cyrillicfonttt}{LiberationMono}
+
+%\defaultfontfeatures{Mapping=tex-text}
+
+%%% Для работы со сложными формулами
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%%% Чтобы использовать символ градуса (°) - \degree
+\usepackage{gensymb}
+
+%%% Для переноса составных слов
+%\XeTeXinterchartokenstate=1
+\XeTeXcharclass `\- 24
+\XeTeXinterchartoks 24 0 ={\hskip\z@skip}
+\XeTeXinterchartoks 0 24 ={\nobreak}
+
+%%%% Ставим подпись к рисункам. Вместо «рис. 1» будет «Рисунок 1»
+%\addto{\captionsrussian}{\renewcommand{\figurename}{Рисунок}}
+%%%% Убираем точки после цифр в заголовках
+%\def\russian@capsformat{%
+%  \def\postchapter{\@aftersepkern}%
+%  \def\postsection{\@aftersepkern}%
+%  \def\postsubsection{\@aftersepkern}%
+%  \def\postsubsubsection{\@aftersepkern}%
+%  \def\postparagraph{\@aftersepkern}%
+%  \def\postsubparagraph{\@aftersepkern}%
+%}
+
+% Автоматически переносить на след. строку слова которые не убираются
+% в строке
+\sloppy
+
+%%% Для вставки рисунков
+\usepackage{graphicx}
+
+%%% Для вставки ссылок на файлы, интернет ссылок, полезно в библиографии
+%\usepackage{url}
+%\usepackage[hyphens]{url}
+% Шрифт ссылок внутри документа должен оставаться текстовым, с засечками
+\urlstyle{rm}
+\DeclareUrlCommand\path{\urlstyle{rm}}
+\DeclareUrlCommand\pathtt{\urlstyle{tt}}
+%\DeclareUrlCommand\path{\def\UrlBreaks\urlstyle{rm}}
+%\DeclareUrlCommand\pathtt{\def\UrlBreaks\urlstyle{tt}}
+
+
+%%% Подподразделы(\subsubsection) не выводим в содержании
+\setcounter{tocdepth}{2}
+
+%%% Каждый раздел (\section) с новой страницы
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
+%%% В введении нумерация подразделов идёт с буквой «В» (например В.1)
+\makeatletter
+\renewcommand\thesubsection{\ifnum\c@section=0{В.\arabic{subsection}}\else{\arabic{section}.\arabic{subsection}}\fi}
+\makeatother
+
+\renewcommand{\ESKDsectionAlign}{\ESKDsectAlignCenter}
+
+%%% Новые стили для ЕСПД
+
+\setlength{\headsep}{10mm}%
+%\setlength{\voffset}{20mm}%
+
+%\usepackage[numbertop]{eskdplain}
+\ESKDnewStyle{espdtitle}{15mm}
+\ESKDputOnStyle{espdtitle}{stamp}{%
+	\newsavebox{\ESKDcolumnsxixboxX}
+	\savebox{\ESKDcolumnsxixboxX}{
+	\setlength{\unitlength}{1mm}%
+	\begin{picture}(0,0)(0,0)
+	\linethickness{\ESKDlineThick}
+	\put(0, 0){\line(1,0){145}}
+	\put(0, 7){\line(1,0){145}}
+	\put(0, 12){\line(1,0){145}}
+	\put(0, 0){\line(0,1){12}}
+	\put(145,0){\line(0,1){12}}
+	\linethickness{\ESKDlineThin}
+	\put(25, 0){\line(0,1){12}}
+	\put(60, 0){\line(0,1){12}}
+	\put(85, 0){\line(0,1){12}}
+	\put(110, 0){\line(0,1){12}}
+	\put(0, 8.3){\makebox[25mm]{\ESKDfontIII\ESKDcolumnXIXname}}
+	\put(0, 2.3){\makebox[25mm]{\ESKDfontIII\ESKDtheColumnXIX}}
+	\put(25, 8.3){\makebox[35mm]{\ESKDfontIII\ESKDcolumnXXname}}
+	\put(60, 8.3){\makebox[25mm]{\ESKDfontIII\ESKDcolumnXXIname}}
+	\put(60, 2.3){\makebox[25mm]{\ESKDfontIII\ESKDtheColumnXXI}}
+	\put(85, 8.3){\makebox[25mm]{\ESKDfontIII\ESKDcolumnXXIIname}}
+	\put(85, 2.3){\makebox[25mm]{\ESKDfontIII\ESKDtheColumnXXII}}
+	\put(110, 8.3){\makebox[35mm]{\ESKDfontIII\ESKDcolumnXXIIIname}}
+	\end{picture}}
+	
+	\put(\ESKDltu{\ESKDframeX},\ESKDltu{\ESKDframeY}){%
+		\begin{turn}{90}\usebox{\ESKDcolumnsxixboxX}\end{turn}
+	}
+}
+\ESKDdefaultTitleStyle{espdtitle}
+
+% Формат первой и остальных страниц
+\ESKDnewStyle{espdpage}{15mm}
+\ESKDputOnStyle{espdpage}{frame}{%
+	\put(7, 285){\makebox[210mm]{\thepage}}
+	\put(7, 278){\makebox[210mm]{\DecimalNumber}}
+	%\setlength{\headsep}{10mm}%
+	%\setlength{\headheight}{5mm}%
+	%\setlength{\topmargin}{0mm}%
+}
+\ESKDdefaultFirstStyle{espdpage}
+\ESKDdefaultStyle{espdpage}
+
+% Шрифт большинства элементов титульного листа
+\renewcommand{\ESKDfontVsize}{\fontsize{14pt}{16pt}}
+% Основной шрифт будет прямым (по умолчанию, наклонный)
+\renewcommand{\ESKDfontShape}{\normalfont}
+
+\clubpenalty =10000
+
+
+\makeatletter
+\newcommand*{\lstlinelink}[2]{%
+  \refused{#1}%
+  \edef\lstlinelink@tmp{\getrefbykeydefault{#1}{anchor}{}}%
+  \ifx\lstlinelink@tmp\@empty
+    #2%
+  \else
+    \edef\lstlinelink@target{%
+      \expandafter\lstlinelink@parse\lstlinelink@tmp\@nil
+      #2%
+    }%
+    \hyperlink{\lstlinelink@target}{#2}%
+  \fi
+}
+\def\lstlinelink@parse#1.#2\@nil{lstnumber.#2.}%
+\makeatother
+
+\renewcommand\lstlistingname{Листинг}
+\lstset{
+    language=C++,
+    basicstyle=\linespread{0.4}\small,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keepspaces=true,
+    columns=flexible,
+    breaklines=true,
+    captionpos=t,
+    frame=tb
+}
+
+
+
+
+
+
+
+
