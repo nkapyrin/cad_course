@@ -103,9 +103,11 @@
 
 <xsl:choose>
   <xsl:when test="count(//compounddef[@kind='file']) &gt; 0">
+    Привет
     <xsl:for-each select="//compounddef[@kind='file']">
       <xsl:sort select="compoundname/text()"/> <!-- Включать имена файлов в алфавитном порядке -->
       <xsl:variable name="this_file_refid" select="@id"/>
+      <xsl:variable name="this_file_name" select="compoundname/text()"/>
 
       <xsl:text>\subsection{Файл </xsl:text>
         <!-- Особые команды чтобы не сломать таблицу содержания в PDF командой nolinkurl -->
@@ -179,14 +181,14 @@
         <xsl:choose>
           <xsl:when test="count(programlisting/codeline) &gt; 0">
             <xsl:text>\paragraph{Текст файла}\mbox{}&#xa;&#xa;</xsl:text>
-            <xsl:text>Текст файла \nolinkurl{</xsl:text><xsl:value-of select="@full_path_name"/>
+            <xsl:text>Текст файла \nolinkurl{</xsl:text><xsl:value-of select="$this_file_name"/>
             <xsl:text>} приведён в листинге \ref{</xsl:text><xsl:value-of select="@refid"/><xsl:text>-code</xsl:text>
             <xsl:text>}.&#xa;&#xa;</xsl:text>
             <xsl:text>\begin{lstlisting}[</xsl:text>
             <xsl:text>label=</xsl:text>
             <xsl:value-of select="@refid"/><xsl:text>-code</xsl:text>
             <xsl:text>,caption={Текст файла </xsl:text>
-            <xsl:value-of select="@full_path_name"/>
+            <xsl:value-of select="$this_file_name"/>
             <xsl:text>}]&#xa;&#xa;</xsl:text>
             <xsl:for-each select="programlisting/codeline">
             <xsl:apply-templates select="*|text()"/><xsl:text>&#xa;</xsl:text>
