@@ -2,7 +2,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1">
 <xsl:output method="text"/>
 
-<xsl:param name="current_decimal"/>
 <xsl:param name="include_source_code" select="yes"/>
 
 <!-- Основной шаблон, с которого начинается текст -->
@@ -103,26 +102,23 @@
 
 
 <xsl:choose>
-  <xsl:when test="count(//p[@decim=$current_decimal]/file) &gt; 0">
-    <xsl:for-each select="//p[@decim=$current_decimal]/file">
-      <xsl:sort select="@name"/> <!-- Включать имена файлов в алфавитном порядке -->
-      <xsl:variable name="this_file_refid" select="@refid"/>
+  <xsl:when test="count(//compounddef[@kind='file']) &gt; 0">
+    <xsl:for-each select="///compounddef[@kind='file']">
+      <xsl:sort select="compoundname/text()"/> <!-- Включать имена файлов в алфавитном порядке -->
+      <xsl:variable name="this_file_refid" select="@id"/>
 
-      <xsl:text>&#xa;% </xsl:text><xsl:value-of select="@full_path"/><xsl:value-of select="@name"/><xsl:text>&#xa;</xsl:text>
-      <!--<xsl:text>\subsection{Файл \nolinkurl{</xsl:text><xsl:value-of select="@full_path_name"/>
-      <xsl:text>}}\label{</xsl:text><xsl:value-of select="@refid"/><xsl:text>}&#xa;&#xa;</xsl:text>-->
       <xsl:text>\subsection{Файл </xsl:text>
         <!-- Особые команды чтобы не сломать таблицу содержания в PDF командой nolinkurl -->
         <xsl:text>\texorpdfstring{</xsl:text>
-        <xsl:text>\nolinkurl{</xsl:text><xsl:value-of select="@full_path_name"/><xsl:text>}</xsl:text>
-        <xsl:text>}{</xsl:text><xsl:value-of select="@full_path_name"/><xsl:text>}</xsl:text>
-      <xsl:text>}\label{</xsl:text><xsl:value-of select="@refid"/><xsl:text>}&#xa;&#xa;</xsl:text>
+        <xsl:text>\nolinkurl{</xsl:text><xsl:value-of select="compoundname/text()"/><xsl:text>}</xsl:text>
+        <xsl:text>}{</xsl:text><xsl:value-of select="compoundname/text()"/><xsl:text>}</xsl:text>
+      <xsl:text>}\label{</xsl:text><xsl:value-of select="@id"/><xsl:text>}&#xa;&#xa;</xsl:text>
 
       <!-- Директивы препроцессора -->
       <xsl:choose>
-        <xsl:when test="count(compounddef/sectiondef/memberdef[@kind='define']) &gt; 0">
+        <xsl:when test="count(sectiondef/memberdef[@kind='define']) &gt; 0">
           <xsl:text>\paragraph{Директивы препроцессора}\mbox{}&#xa;&#xa;</xsl:text>
-          <xsl:for-each select="compounddef/sectiondef/memberdef[@kind='define']">
+          <xsl:for-each select="sectiondef/memberdef[@kind='define']">
             <xsl:text>\raggedright\noindent\#define </xsl:text>
             <xsl:value-of select="name/text()"/><xsl:text> </xsl:text><xsl:value-of select="initializer/@compiled_text"/>
             <xsl:text>\label{</xsl:text><xsl:value-of select="@id"/><xsl:text>}</xsl:text>
@@ -131,24 +127,11 @@
         </xsl:when>
       </xsl:choose>
 
-      <!-- Пространства имён -->
-      <xsl:choose>
-        <xsl:when test="count(compounddef/innernamespace) &gt; 0">
-          <xsl:text>\paragraph{Пространства имён}: </xsl:text>
-          <xsl:for-each select="compounddef/innernamespace">
-            <xsl:text>\hyperref[</xsl:text><xsl:value-of select="@refid"/>
-            <xsl:text>]{</xsl:text><xsl:value-of select="text()"/><xsl:text>}</xsl:text>
-            <xsl:if test="position() != last()">, </xsl:if>
-          </xsl:for-each>
-          <xsl:text>.&#xa;&#xa;</xsl:text>
-        </xsl:when>
-      </xsl:choose>
-
       <!-- Подключаемые модули -->
       <xsl:choose>
-        <xsl:when test="count(compounddef/includes) &gt; 0">
+        <xsl:when test="count(includes) &gt; 0">
           <xsl:text>\paragraph{Подключаемые модули}\mbox{}&#xa;&#xa;</xsl:text>
-          <xsl:for-each select="compounddef/includes">
+          <xsl:for-each select="includes">
             <xsl:choose>
               <xsl:when test="@refid">
                 <xsl:choose>
@@ -180,9 +163,9 @@
 
       <!-- Классы -->
       <xsl:choose>
-        <xsl:when test="count(compounddef/innerclass) &gt; 0">
+        <xsl:when test="count(innerclass) &gt; 0">
           <xsl:text>\paragraph{Классы}\mbox{}&#xa;&#xa;\begin{itemize}&#xa;</xsl:text>
-          <xsl:for-each select="compounddef/innerclass">
+          <xsl:for-each select="innerclass">
             <xsl:text>\item \hyperref[</xsl:text><xsl:value-of select="@refid"/>
             <xsl:text>]{</xsl:text><xsl:value-of select="text()"/><xsl:text>}\\</xsl:text>
             <xsl:text>&#xa;</xsl:text>
@@ -194,7 +177,7 @@
       <xsl:if test="$include_source_code='yes'">
         <!-- Текст файла -->
         <xsl:choose>
-          <xsl:when test="count(compounddef/programlisting/codeline) &gt; 0">
+          <xsl:when test="count(programlisting/codeline) &gt; 0">
             <xsl:text>\paragraph{Текст файла}\mbox{}&#xa;&#xa;</xsl:text>
             <xsl:text>Текст файла \nolinkurl{</xsl:text><xsl:value-of select="@full_path_name"/>
             <xsl:text>} приведён в листинге \ref{</xsl:text><xsl:value-of select="@refid"/><xsl:text>-code</xsl:text>
@@ -205,7 +188,7 @@
             <xsl:text>,caption={Текст файла </xsl:text>
             <xsl:value-of select="@full_path_name"/>
             <xsl:text>}]&#xa;&#xa;</xsl:text>
-            <xsl:for-each select="compounddef/programlisting/codeline">
+            <xsl:for-each select="programlisting/codeline">
             <xsl:apply-templates select="*|text()"/><xsl:text>&#xa;</xsl:text>
             </xsl:for-each>
             <xsl:text>\end{lstlisting}&#xa;&#xa;</xsl:text>
